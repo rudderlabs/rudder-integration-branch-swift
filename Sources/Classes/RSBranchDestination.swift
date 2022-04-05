@@ -44,9 +44,9 @@ class RSBranchDestination: RSDestinationPlugin {
             var customProperties = [String: String]()
             switch message.event {
             case
-                RSECommerceConstants.Event.productViewed,
-                RSECommerceConstants.Event.productShared,
-                RSECommerceConstants.Event.productReviewed:
+                RSEvents.Ecommerce.productViewed,
+                RSEvents.Ecommerce.productShared,
+                RSEvents.Ecommerce.productReviewed:
                 if let product = getProductData(from: message.properties) {
                     let object = BranchUniversalObject()
                     object.contentMetadata = product
@@ -54,18 +54,18 @@ class RSBranchDestination: RSDestinationPlugin {
                     branchEvent.contentItems = [object]
                 }
             case
-                RSECommerceConstants.Event.productAdded,
-                RSECommerceConstants.Event.productAddedToWishList,
-                RSECommerceConstants.Event.cartViewed,
-                RSECommerceConstants.Event.checkoutStarted,
-                RSECommerceConstants.Event.paymentInfoEntered,
-                RSECommerceConstants.Event.orderCompleted,
-                RSECommerceConstants.Event.spendCredits,
-                RSECommerceConstants.Event.productListViewed:
+                RSEvents.Ecommerce.productAdded,
+                RSEvents.Ecommerce.productAddedToWishList,
+                RSEvents.Ecommerce.cartViewed,
+                RSEvents.Ecommerce.checkoutStarted,
+                RSEvents.Ecommerce.paymentInfoEntered,
+                RSEvents.Ecommerce.orderCompleted,
+                RSEvents.Ecommerce.spendCredits,
+                RSEvents.Ecommerce.productListViewed:
                 insertECommerceProductData(branchEvent: &branchEvent, properties: message.properties)
             case
-                RSECommerceConstants.Event.productsSearched:
-                if let query = message.properties?[RSECommerceConstants.Key.query] {
+                RSEvents.Ecommerce.productsSearched:
+                if let query = message.properties?[RSKeys.Ecommerce.query] {
                     let object = BranchUniversalObject()
                     object.keywords = ["\(query)"]
                     branchEvent.contentItems = [object]
@@ -93,49 +93,51 @@ class RSBranchDestination: RSDestinationPlugin {
 
 extension RSBranchDestination {
     var TRACK_RESERVED_KEYWORDS: [String] {
-        return [RSECommerceConstants.Key.productId, RSECommerceConstants.Key.sku, RSECommerceConstants.Key.brand, RSECommerceConstants.Key.variant, RSECommerceConstants.Key.rating, RSECommerceConstants.Key.currency ,RSECommerceConstants.Key.name, RSECommerceConstants.Key.category, RSECommerceConstants.Key.quantity, RSECommerceConstants.Key.price, RSECommerceConstants.Key.revenue, RSECommerceConstants.Key.total, RSECommerceConstants.Key.value, RSECommerceConstants.Key.currency, RSECommerceConstants.Key.shipping, RSECommerceConstants.Key.affiliation, RSECommerceConstants.Key.coupon, RSECommerceConstants.Key.tax, RSECommerceConstants.Key.orderId]
+        return [RSKeys.Ecommerce.productId, RSKeys.Ecommerce.sku, RSKeys.Ecommerce.brand, RSKeys.Ecommerce.variant, RSKeys.Ecommerce.rating, RSKeys.Ecommerce.currency ,RSKeys.Ecommerce.productName, RSKeys.Ecommerce.category, RSKeys.Ecommerce.quantity, RSKeys.Ecommerce.price, RSKeys.Ecommerce.revenue, RSKeys.Ecommerce.total, RSKeys.Ecommerce.value, RSKeys.Ecommerce.currency, RSKeys.Ecommerce.shipping, RSKeys.Ecommerce.affiliation, RSKeys.Ecommerce.coupon, RSKeys.Ecommerce.tax, RSKeys.Ecommerce.orderId]
     }
     
     func getBranchEvent(eventName: String) -> BranchEvent {
         switch eventName {
-        case RSECommerceConstants.Event.productAdded:
+        case RSEvents.Ecommerce.productAdded:
             return BranchEvent.standardEvent(BranchStandardEvent.addToCart)
-        case RSECommerceConstants.Event.productAddedToWishList:
+        case RSEvents.Ecommerce.productAddedToWishList:
             return BranchEvent.standardEvent(BranchStandardEvent.addToWishlist)
-        case RSECommerceConstants.Event.cartViewed:
+        case RSEvents.Ecommerce.cartViewed:
             return BranchEvent.standardEvent(BranchStandardEvent.viewCart)
-        case RSECommerceConstants.Event.checkoutStarted:
+        case RSEvents.Ecommerce.checkoutStarted:
             return BranchEvent.standardEvent(BranchStandardEvent.initiatePurchase)
-        case RSECommerceConstants.Event.paymentInfoEntered:
+        case RSEvents.Ecommerce.paymentInfoEntered:
             return BranchEvent.standardEvent(BranchStandardEvent.addPaymentInfo)
-        case RSECommerceConstants.Event.orderCompleted:
+        case RSEvents.Ecommerce.orderCompleted:
             return BranchEvent.standardEvent(BranchStandardEvent.purchase)
-        case RSECommerceConstants.Event.spendCredits:
+        case RSEvents.Ecommerce.spendCredits:
             return BranchEvent.standardEvent(BranchStandardEvent.spendCredits)
-        case RSECommerceConstants.Event.productsSearched:
+        case RSEvents.Ecommerce.productsSearched:
             return BranchEvent.standardEvent(BranchStandardEvent.search)
-        case RSECommerceConstants.Event.productViewed:
+        case RSEvents.Ecommerce.productViewed:
             return BranchEvent.standardEvent(BranchStandardEvent.viewItem)
-        case RSECommerceConstants.Event.productListViewed:
+        case RSEvents.Ecommerce.productListViewed:
             return BranchEvent.standardEvent(BranchStandardEvent.viewItems)
-        case RSECommerceConstants.Event.productShared:
+        case RSEvents.Ecommerce.productShared:
             return BranchEvent.standardEvent(BranchStandardEvent.share)
-        case RSECommerceConstants.Event.completeRegistration:
+        case RSEvents.LifeCycle.completeRegistration:
             return BranchEvent.standardEvent(BranchStandardEvent.completeRegistration)
-        case RSECommerceConstants.Event.completeTutorial:
+        case RSEvents.LifeCycle.completeTutorial:
             return BranchEvent.standardEvent(BranchStandardEvent.completeTutorial)
-        case RSECommerceConstants.Event.achieveLevel:
+        case RSEvents.LifeCycle.achieveLevel:
             return BranchEvent.standardEvent(BranchStandardEvent.achieveLevel)
-        case RSECommerceConstants.Event.unlockAchievement:
+        case RSEvents.LifeCycle.unlockAchievement:
             return BranchEvent.standardEvent(BranchStandardEvent.unlockAchievement)
-        case RSECommerceConstants.Event.productAddedToWishList:
+        case RSEvents.Ecommerce.productAddedToWishList:
             return BranchEvent.standardEvent(BranchStandardEvent.addToWishlist)
-        case RSECommerceConstants.Event.promotionViewed:
+        case RSEvents.Ecommerce.promotionViewed:
             return BranchEvent.standardEvent(BranchStandardEvent.viewAd)
-        case RSECommerceConstants.Event.promotionClicked:
+        case RSEvents.Ecommerce.promotionClicked:
             return BranchEvent.standardEvent(BranchStandardEvent.clickAd)
-        case RSECommerceConstants.Event.productReviewed:
+        case RSEvents.Ecommerce.productReviewed:
             return BranchEvent.standardEvent(BranchStandardEvent.rate)
+        case RSEvents.Ecommerce.reserve:
+            return BranchEvent.standardEvent(BranchStandardEvent.reserve)
         default:
             return BranchEvent.customEvent(withName: eventName)
         }
@@ -150,29 +152,29 @@ extension RSBranchDestination {
         var sku: String?
         for (key, value) in properties {
             switch key {
-            case RSECommerceConstants.Key.productId:
+            case RSKeys.Ecommerce.productId:
                 productId = "\(value)"
-            case RSECommerceConstants.Key.sku:
+            case RSKeys.Ecommerce.sku:
                 sku = "\(value)"
-            case RSECommerceConstants.Key.brand:
+            case RSKeys.Ecommerce.brand:
                 product.productBrand = "\(value)"
-            case RSECommerceConstants.Key.variant:
+            case RSKeys.Ecommerce.variant:
                 product.productVariant = "\(value)"
-            case RSECommerceConstants.Key.rating:
+            case RSKeys.Ecommerce.rating:
                 product.rating = Double("\(value)") ?? 0
-            case RSECommerceConstants.Key.currency:
+            case RSKeys.Ecommerce.currency:
                 if BNCCurrencyAllCurrencies().contains("\(value)") {
                     product.currency = BNCCurrency(rawValue: "\(value)")
                 }
-            case RSECommerceConstants.Key.name:
+            case RSKeys.Ecommerce.productName:
                 product.productName = "\(value)"
-            case RSECommerceConstants.Key.category:
+            case RSKeys.Ecommerce.category:
                 if BNCProductCategoryAllCategories().contains("\(value)") {
                     product.productCategory = BNCProductCategory(rawValue: "\(value)")
                 }
-            case RSECommerceConstants.Key.quantity:
+            case RSKeys.Ecommerce.quantity:
                 product.quantity = Double("\(value)") ?? 0
-            case RSECommerceConstants.Key.price:
+            case RSKeys.Ecommerce.price:
                 product.price = NSDecimalNumber(string: "\(value)")
             default:
                 break
@@ -191,7 +193,7 @@ extension RSBranchDestination {
             return
         }
         var productList = [BranchUniversalObject]()
-        if let products = properties[RSECommerceConstants.Key.products] as? [[String: Any]] {
+        if let products = properties[RSKeys.Ecommerce.products] as? [[String: Any]] {
             for productDict in products {
                 if let product = getProductData(from: productDict) {
                     let object = BranchUniversalObject()
@@ -214,25 +216,25 @@ extension RSBranchDestination {
         
         for (key, value) in properties {
             switch key {
-            case RSECommerceConstants.Key.revenue:
+            case RSKeys.Ecommerce.revenue:
                 branchEvent.revenue = NSDecimalNumber(string: "\(value)")
-            case RSECommerceConstants.Key.total:
+            case RSKeys.Ecommerce.total:
                 branchEvent.revenue = NSDecimalNumber(string: "\(value)")
-            case RSECommerceConstants.Key.value:
+            case RSKeys.Ecommerce.value:
                 branchEvent.revenue = NSDecimalNumber(string: "\(value)")
-            case RSECommerceConstants.Key.currency:
+            case RSKeys.Ecommerce.currency:
                 if BNCCurrencyAllCurrencies().contains("\(value)") {
                     branchEvent.currency = BNCCurrency(rawValue: "\(value)")
                 }
-            case RSECommerceConstants.Key.shipping:
+            case RSKeys.Ecommerce.shipping:
                 branchEvent.shipping = NSDecimalNumber(string: "\(value)")
-            case RSECommerceConstants.Key.affiliation:
+            case RSKeys.Ecommerce.affiliation:
                 branchEvent.affiliation = "\(value)"
-            case RSECommerceConstants.Key.coupon:
+            case RSKeys.Ecommerce.coupon:
                 branchEvent.coupon = "\(value)"
-            case RSECommerceConstants.Key.tax:
+            case RSKeys.Ecommerce.tax:
                 branchEvent.tax = NSDecimalNumber(string: "\(value)")
-            case RSECommerceConstants.Key.orderId:
+            case RSKeys.Ecommerce.orderId:
                 branchEvent.transactionID = "\(value)"
             default: break
             }
