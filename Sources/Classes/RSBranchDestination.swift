@@ -43,35 +43,14 @@ class RSBranchDestination: RSDestinationPlugin {
             var branchEvent: BranchEvent = getBranchEvent(eventName: message.event)
             var customProperties = [String: String]()
             switch message.event {
-            case
-                RSEvents.Ecommerce.productViewed,
-                RSEvents.Ecommerce.productShared,
-                RSEvents.Ecommerce.productReviewed:
-                if let product = getProductData(from: message.properties) {
-                    let object = BranchUniversalObject()
-                    object.contentMetadata = product
-                    object.contentMetadata.contentSchema = .commerceProduct
-                    branchEvent.contentItems = [object]
-                }
-            case
-                RSEvents.Ecommerce.productAdded,
-                RSEvents.Ecommerce.productAddedToWishList,
-                RSEvents.Ecommerce.cartViewed,
-                RSEvents.Ecommerce.checkoutStarted,
-                RSEvents.Ecommerce.paymentInfoEntered,
-                RSEvents.Ecommerce.orderCompleted,
-                RSEvents.Ecommerce.spendCredits,
-                RSEvents.Ecommerce.productListViewed:
-                insertECommerceProductData(branchEvent: &branchEvent, properties: message.properties)
-            case
-                RSEvents.Ecommerce.productsSearched:
+            case RSEvents.Ecommerce.productsSearched:
                 if let query = message.properties?[RSKeys.Ecommerce.query] {
                     let object = BranchUniversalObject()
                     object.keywords = ["\(query)"]
                     branchEvent.contentItems = [object]
                 }
             default:
-                break
+                insertECommerceProductData(branchEvent: &branchEvent, properties: message.properties)
             }
             insertCustomPropertiesData(params: &customProperties, properties: message.properties)
             branchEvent.customData = customProperties
@@ -93,7 +72,7 @@ class RSBranchDestination: RSDestinationPlugin {
 
 extension RSBranchDestination {
     var TRACK_RESERVED_KEYWORDS: [String] {
-        return [RSKeys.Ecommerce.productId, RSKeys.Ecommerce.sku, RSKeys.Ecommerce.brand, RSKeys.Ecommerce.variant, RSKeys.Ecommerce.rating, RSKeys.Ecommerce.currency ,RSKeys.Ecommerce.productName, RSKeys.Ecommerce.category, RSKeys.Ecommerce.quantity, RSKeys.Ecommerce.price, RSKeys.Ecommerce.revenue, RSKeys.Ecommerce.total, RSKeys.Ecommerce.value, RSKeys.Ecommerce.currency, RSKeys.Ecommerce.shipping, RSKeys.Ecommerce.affiliation, RSKeys.Ecommerce.coupon, RSKeys.Ecommerce.tax, RSKeys.Ecommerce.orderId]
+        return [RSKeys.Ecommerce.productId, RSKeys.Ecommerce.sku, RSKeys.Ecommerce.brand, RSKeys.Ecommerce.variant, RSKeys.Ecommerce.rating, RSKeys.Ecommerce.currency ,RSKeys.Ecommerce.productName, RSKeys.Ecommerce.category, RSKeys.Ecommerce.quantity, RSKeys.Ecommerce.price, RSKeys.Ecommerce.revenue, RSKeys.Ecommerce.total, RSKeys.Ecommerce.value, RSKeys.Ecommerce.currency, RSKeys.Ecommerce.shipping, RSKeys.Ecommerce.affiliation, RSKeys.Ecommerce.coupon, RSKeys.Ecommerce.tax, RSKeys.Ecommerce.orderId, RSKeys.Ecommerce.products, RSKeys.Ecommerce.query]
     }
     
     func getBranchEvent(eventName: String) -> BranchEvent {
@@ -143,13 +122,14 @@ extension RSBranchDestination {
         }
     }
         
-    func getProductData(from properties: [String: Any]?) -> BranchContentMetadata? {
+    func getProductData(from properties: [String: Any]?, isProductArray: Bool = false) -> BranchContentMetadata? {
         guard let properties = properties else {
             return nil
         }
         let product = BranchContentMetadata()
         var productId: String?
         var sku: String?
+        var customMetadata = [String: String]()
         for (key, value) in properties {
             switch key {
             case RSKeys.Ecommerce.productId:
@@ -177,13 +157,21 @@ extension RSBranchDestination {
             case RSKeys.Ecommerce.price:
                 product.price = NSDecimalNumber(string: "\(value)")
             default:
-                break
+                if isProductArray {
+                    customMetadata[key] = "\(value)"
+                }
             }
         }
         if let sku = sku {
             product.sku = sku
         } else if let productId = productId {
             product.sku = productId
+        }
+        if !customMetadata.isEmpty {
+            product.customMetadata = NSMutableDictionary(dictionary: customMetadata)
+        }
+        if product.isEmpty {
+            return nil
         }
         return product
     }
@@ -195,7 +183,7 @@ extension RSBranchDestination {
         var productList = [BranchUniversalObject]()
         if let products = properties[RSKeys.Ecommerce.products] as? [[String: Any]] {
             for productDict in products {
-                if let product = getProductData(from: productDict) {
+                if let product = getProductData(from: productDict, isProductArray: true) {
                     let object = BranchUniversalObject()
                     object.contentMetadata = product
                     object.contentMetadata.contentSchema = .commerceProduct
@@ -213,31 +201,40 @@ extension RSBranchDestination {
         if !productList.isEmpty {
             branchEvent.contentItems = productList
         }
-        
-        for (key, value) in properties {
+        var revenue: NSDecimalNumber?
+        var total: NSDecimalNumber?
+        var value: NSDecimalNumber?
+        for (key, val) in properties {
             switch key {
             case RSKeys.Ecommerce.revenue:
-                branchEvent.revenue = NSDecimalNumber(string: "\(value)")
+                revenue = NSDecimalNumber(string: "\(val)")
             case RSKeys.Ecommerce.total:
-                branchEvent.revenue = NSDecimalNumber(string: "\(value)")
+                total = NSDecimalNumber(string: "\(val)")
             case RSKeys.Ecommerce.value:
-                branchEvent.revenue = NSDecimalNumber(string: "\(value)")
+                value = NSDecimalNumber(string: "\(val)")
             case RSKeys.Ecommerce.currency:
-                if BNCCurrencyAllCurrencies().contains("\(value)") {
-                    branchEvent.currency = BNCCurrency(rawValue: "\(value)")
+                if BNCCurrencyAllCurrencies().contains("\(val)") {
+                    branchEvent.currency = BNCCurrency(rawValue: "\(val)")
                 }
             case RSKeys.Ecommerce.shipping:
-                branchEvent.shipping = NSDecimalNumber(string: "\(value)")
+                branchEvent.shipping = NSDecimalNumber(string: "\(val)")
             case RSKeys.Ecommerce.affiliation:
-                branchEvent.affiliation = "\(value)"
+                branchEvent.affiliation = "\(val)"
             case RSKeys.Ecommerce.coupon:
-                branchEvent.coupon = "\(value)"
+                branchEvent.coupon = "\(val)"
             case RSKeys.Ecommerce.tax:
-                branchEvent.tax = NSDecimalNumber(string: "\(value)")
+                branchEvent.tax = NSDecimalNumber(string: "\(val)")
             case RSKeys.Ecommerce.orderId:
-                branchEvent.transactionID = "\(value)"
+                branchEvent.transactionID = "\(val)"
             default: break
             }
+        }
+        if let revenue = revenue {
+            branchEvent.revenue = revenue
+        } else if let total = total {
+            branchEvent.revenue = total
+        } else if let value = value {
+            branchEvent.revenue = value
         }
     }
     
@@ -251,6 +248,12 @@ extension RSBranchDestination {
             }
             params[key] = "\(value)"
         }
+    }
+}
+
+extension BranchContentMetadata {
+    var isEmpty: Bool {
+        return sku == nil && productBrand == nil && productVariant == nil && productName == nil && productCategory == nil
     }
 }
 
