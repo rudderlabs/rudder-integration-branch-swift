@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import RudderStack
+import Rudder
 import RudderBranch
 
 @UIApplicationMain
@@ -18,15 +18,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        let config: RSConfig = RSConfig(writeKey: "1wvsoF3Kx2SczQNlx1dvcqW9ODW")
-            .dataPlaneURL("https://rudderstacz.dataplane.rudderstack.com")
-            .loglevel(.debug)
+        let config: RSConfig = RSConfig(writeKey: "2ANHqCXlAwVTNbz43lIDM6NPguq")
+            .dataPlaneURL("https://4e4c-2405-201-8000-60fb-a5a7-a964-1cad-df2e.ngrok.io")
+            .controlPlaneURL("https://3476-2405-201-8000-60fb-a5a7-a964-1cad-df2e.ngrok.io")
+            .loglevel(.none)
+//        let config: RSConfig = RSConfig(writeKey: "1wvsoF3Kx2SczQNlx1dvcqW9ODW")
+//            .dataPlaneURL("https://rudderstacz.dataplane.rudderstack.com")
+//            .loglevel(.debug)
             .trackLifecycleEvents(false)
             .recordScreenViews(false)
         
-        client = RSClient(config: config)
+        client = RSClient.sharedInstance()
+        client?.configure(with: config)
 
-        client?.addDestination(RudderBranchDestination())        
+        client?.addDestination(RudderBranchDestination())
         return true
     }
 

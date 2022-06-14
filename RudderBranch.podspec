@@ -17,6 +17,6 @@ Pod::Spec.new do |s|
     s.module_name = 'RudderBranch'
     s.swift_version = '5.3'
 
-    s.dependency 'RudderStack'
+    s.dependency 'Rudder', '~> 2.0.1'
     s.dependency 'Branch', '~> 1.41.0'
 end

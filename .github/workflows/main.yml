@@ -2,7 +2,7 @@ name: CI
 on:
   push:
     tags:
-    - 1.*
+    - v1.*
     
 jobs:
   build:
@@ -15,3 +15,4 @@ jobs:
         COCOAPODS_TRUNK_TOKEN: ${{ secrets.COCOAPODS_TRUNK_TOKEN }}
       run: |
         pod trunk push --allow-warnings
+        
