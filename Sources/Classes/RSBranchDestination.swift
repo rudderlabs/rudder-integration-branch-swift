@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import RudderStack
+import Rudder
 import Branch
 
 class RSBranchDestination: RSDestinationPlugin {
@@ -18,14 +18,17 @@ class RSBranchDestination: RSDestinationPlugin {
         
     func update(serverConfig: RSServerConfig, type: UpdateType) {
         guard type == .initial else { return }
-        if let branchConfig: BranchConfig = serverConfig.getConfig(forPlugin: self) {
-            if !branchConfig.branchKey.isEmpty {
-                branchInstance = Branch.getInstance(branchConfig.branchKey)
-            }
-            if client?.configuration.logLevel == .debug {
-                branchInstance?.enableLogging()
-            }
+        guard let branchConfig: RudderBranchConfig = serverConfig.getConfig(forPlugin: self) else {
+            client?.log(message: "Failed to Initialize Branch Factory", logLevel: .warning)
+            return
         }
+        if !branchConfig.branchKey.isEmpty {
+            branchInstance = Branch.getInstance(branchConfig.branchKey)
+        }
+        if client?.configuration?.logLevel == .debug, client?.configuration?.logLevel == .verbose {
+            branchInstance?.enableLogging()
+        }
+        client?.log(message: "Initializing Branch SDK", logLevel: .debug)
     }
     
     func identify(message: IdentifyMessage) -> IdentifyMessage? {
@@ -56,10 +59,6 @@ class RSBranchDestination: RSDestinationPlugin {
             branchEvent.customData = customProperties
             branchEvent.logEvent()
         }
-        return message
-    }
-    
-    func screen(message: ScreenMessage) -> ScreenMessage? {
         return message
     }
     
@@ -257,7 +256,7 @@ extension BranchContentMetadata {
     }
 }
 
-struct BranchConfig: Codable {
+struct RudderBranchConfig: Codable {
     let _branchKey: String?
     var branchKey: String {
         return _branchKey ?? ""
