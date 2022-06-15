@@ -106,8 +106,6 @@ extension RSBranchDestination {
             return BranchEvent.standardEvent(BranchStandardEvent.achieveLevel)
         case RSEvents.LifeCycle.unlockAchievement:
             return BranchEvent.standardEvent(BranchStandardEvent.unlockAchievement)
-        case RSEvents.Ecommerce.productAddedToWishList:
-            return BranchEvent.standardEvent(BranchStandardEvent.addToWishlist)
         case RSEvents.Ecommerce.promotionViewed:
             return BranchEvent.standardEvent(BranchStandardEvent.viewAd)
         case RSEvents.Ecommerce.promotionClicked:
