@@ -1,0 +1,29 @@
+PODS:
+  - Branch (1.41.0)
+  - Rudder (2.0.1)
+  - RudderBranch (1.0.0):
+    - Branch (~> 1.41.0)
+    - Rudder (~> 2.0.1)
+
+DEPENDENCIES:
+  - Branch (~> 1.41.0)
+  - Rudder (~> 2.0.1)
+  - RudderBranch (from `.`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - Branch
+    - Rudder
+
+EXTERNAL SOURCES:
+  RudderBranch:
+    :path: "."
+
+SPEC CHECKSUMS:
+  Branch: bd6c472d6cab03206877ac86c1241327a3f217d1
+  Rudder: 463af33116984b97f2a19d344e9ad491f164e43e
+  RudderBranch: b12e0368eff4ca60247e24ce25531442703b695c
+
+PODFILE CHECKSUM: 14e34fb2c6c0890cc7a6a461dc14b16c89f57eda
+
+COCOAPODS: 1.11.3
