@@ -70,8 +70,9 @@ class RSBranchDestination: RSDestinationPlugin {
 // MARK: - Support methods
 
 extension RSBranchDestination {
+    // swiftlint:disable line_length cyclomatic_complexity function_body_length
     var TRACK_RESERVED_KEYWORDS: [String] {
-        return [RSKeys.Ecommerce.productId, RSKeys.Ecommerce.sku, RSKeys.Ecommerce.brand, RSKeys.Ecommerce.variant, RSKeys.Ecommerce.rating, RSKeys.Ecommerce.currency ,RSKeys.Ecommerce.productName, RSKeys.Ecommerce.category, RSKeys.Ecommerce.quantity, RSKeys.Ecommerce.price, RSKeys.Ecommerce.revenue, RSKeys.Ecommerce.total, RSKeys.Ecommerce.value, RSKeys.Ecommerce.currency, RSKeys.Ecommerce.shipping, RSKeys.Ecommerce.affiliation, RSKeys.Ecommerce.coupon, RSKeys.Ecommerce.tax, RSKeys.Ecommerce.orderId, RSKeys.Ecommerce.products, RSKeys.Ecommerce.query]
+        return [RSKeys.Ecommerce.productId, RSKeys.Ecommerce.sku, RSKeys.Ecommerce.brand, RSKeys.Ecommerce.variant, RSKeys.Ecommerce.rating, RSKeys.Ecommerce.currency, RSKeys.Ecommerce.productName, RSKeys.Ecommerce.category, RSKeys.Ecommerce.quantity, RSKeys.Ecommerce.price, RSKeys.Ecommerce.revenue, RSKeys.Ecommerce.total, RSKeys.Ecommerce.value, RSKeys.Ecommerce.currency, RSKeys.Ecommerce.shipping, RSKeys.Ecommerce.affiliation, RSKeys.Ecommerce.coupon, RSKeys.Ecommerce.tax, RSKeys.Ecommerce.orderId, RSKeys.Ecommerce.products, RSKeys.Ecommerce.query]
     }
     
     func getBranchEvent(eventName: String) -> BranchEvent {
