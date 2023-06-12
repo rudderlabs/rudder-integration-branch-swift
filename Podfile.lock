@@ -1,13 +1,13 @@
 PODS:
   - Branch (1.41.0)
-  - Rudder (2.0.1)
-  - RudderBranch (1.0.0):
+  - Rudder (2.4.0)
+  - RudderBranch (1.1.0):
     - Branch (~> 1.41.0)
-    - Rudder (~> 2.0.1)
+    - Rudder (~> 2.0)
 
 DEPENDENCIES:
   - Branch (~> 1.41.0)
-  - Rudder (~> 2.0.1)
+  - Rudder (~> 2.0)
   - RudderBranch (from `.`)
 
 SPEC REPOS:
@@ -20,10 +20,10 @@ EXTERNAL SOURCES:
     :path: "."
 
 SPEC CHECKSUMS:
-  Branch: bd6c472d6cab03206877ac86c1241327a3f217d1
-  Rudder: 463af33116984b97f2a19d344e9ad491f164e43e
-  RudderBranch: b12e0368eff4ca60247e24ce25531442703b695c
+  Branch: 5b53e039f5d5cdd12dc5d34b1a6b165168cab9d2
+  Rudder: 7595af0282d02a88dd61816415d4b28cba16a195
+  RudderBranch: 78404c6f92f34161e677a238220b4b8ec4a52e8b
 
-PODFILE CHECKSUM: 14e34fb2c6c0890cc7a6a461dc14b16c89f57eda
+PODFILE CHECKSUM: a5ea7780ae47d77ee094ba9dbdd2f0f8029651b3
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.1
