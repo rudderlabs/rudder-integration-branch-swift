@@ -23,6 +23,7 @@
 		ED2A28FC2770591E00646788 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		ED2A28FD2770591E00646788 /* Podfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		EDF68FE627D1FD620005AAC6 /* RSBranchDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RSBranchDestination.swift; sourceTree = "<group>"; };
+		EDFD97B82A37006300AC0FE5 /* Package.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Package.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +59,7 @@
 			isa = PBXGroup;
 			children = (
 				ED2A28FA2770591E00646788 /* LICENSE */,
+				EDFD97B82A37006300AC0FE5 /* Package.swift */,
 				ED2A28FD2770591E00646788 /* Podfile */,
 				ED2A28FC2770591E00646788 /* README.md */,
 				ED2A28FB2770591E00646788 /* RudderBranch.podspec */,
