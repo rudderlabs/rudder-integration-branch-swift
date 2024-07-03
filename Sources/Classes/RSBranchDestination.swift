@@ -7,7 +7,7 @@
 
 import Foundation
 import Rudder
-import Branch
+import BranchSDK
 
 class RSBranchDestination: RSDestinationPlugin {
     let type = PluginType.destination
