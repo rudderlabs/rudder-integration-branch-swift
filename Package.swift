@@ -14,7 +14,7 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(name: "BranchSDK", url: "https://github.com/BranchMetrics/ios-branch-deep-linking-attribution", "1.41.0"..<"1.41.1"),
+        .package(name: "BranchSDK", url: "https://github.com/BranchMetrics/ios-branch-deep-linking-attribution.git", "3.4.4"..<"3.4.5"),
         .package(name: "Rudder", url: "https://github.com/rudderlabs/rudder-sdk-ios", from: "2.0.0"),
     ],
     targets: [
@@ -29,3 +29,5 @@ let package = Package(
         )
     ]
 )
+
+

@@ -7,7 +7,8 @@ platform :ios, '13.0'
 target 'RudderBranch' do
     project 'RudderBranch.xcodeproj'
     pod 'Rudder', '~> 2.0'
-    pod 'Branch', '~> 1.41.0'
+   
+   
 end
 
 target 'SampleAppObjC' do

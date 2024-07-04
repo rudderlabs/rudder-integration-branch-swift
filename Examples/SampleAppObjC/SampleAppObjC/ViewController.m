@@ -6,6 +6,7 @@
 //
 
 #import "ViewController.h"
+@import Rudder;
 
 @interface ViewController ()
 
@@ -16,7 +17,26 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self customTrackWithProperties];
+    [self customTrackWithoutProperties];
 }
 
+// Custom Events
+- (void)customTrackWithoutProperties{
+   
+    [[RSClient sharedInstance] track:@"Custom Track Without Properties"];
+    
+}
+- (void)customTrackWithProperties{
+    [[RSClient sharedInstance] track:@"Custom Track With Properties" properties:[self getCustomProperties]];
+}
+
+- (NSDictionary*) getCustomProperties {
+    NSDictionary *property = @{
+        @"key-1": @"value-1",
+        @"key-2": @123
+    };
+    return property;
+}
 
 @end

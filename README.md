@@ -38,7 +38,7 @@ For more information on configuring Branch as a destination in RudderStack and t
 2. `RudderBranch` is available through [CocoaPods](https://cocoapods.org). To install it, add the following line to your `Podfile`:
 
 ```ruby
-pod 'RudderBranch', '~> 1.1.0'
+pod 'RudderBranch', '~> 1.2.0'
 ```
 
 3. Run the `pod install` command.
