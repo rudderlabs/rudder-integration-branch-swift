@@ -1,12 +1,11 @@
 PODS:
   - BranchSDK (3.4.4)
   - Rudder (2.4.3)
-  - RudderBranch (1.1.0):
+  - RudderBranch (1.2.0):
     - BranchSDK (~> 3.4.4)
     - Rudder (~> 2.0)
 
 DEPENDENCIES:
-  - BranchSDK (~> 3.4.4)
   - Rudder (~> 2.0)
   - RudderBranch (from `.`)
 
@@ -22,8 +21,8 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   BranchSDK: 28bec34fb99c53ab8e86b7bf69cc55a4505fe0b3
   Rudder: 6d2c0775d5b606e05e00670615ee7f9c0c6d2813
-  RudderBranch: 1bd7e1fa16011c4c684147f678cc1bdc0ac52866
+  RudderBranch: 22879c40a8697e38d427f2b8a7e1b671719ee7de
 
-PODFILE CHECKSUM: c0e8b5b74aac82656808fe48c170d4ad0bb7802c
+PODFILE CHECKSUM: f863e67232ae79113887254dc5967317db0088d7
 
 COCOAPODS: 1.15.2

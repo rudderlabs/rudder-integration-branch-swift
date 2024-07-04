@@ -7,7 +7,7 @@ platform :ios, '13.0'
 target 'RudderBranch' do
     project 'RudderBranch.xcodeproj'
     pod 'Rudder', '~> 2.0'
-    pod 'BranchSDK', '~> 3.4.4'
+   
    
 end
 
